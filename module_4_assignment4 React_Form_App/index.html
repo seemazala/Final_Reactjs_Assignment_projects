@@ -1,0 +1,117 @@
+<!--ReactJS – FormsAssignment
+Problem Statement:
+You work in XYZ Company as a Front End Developer. The company officials want you to build a form using react
+
+Tasks to be performed:
+
+1.	Create an HTML page with basic HTML skeleton
+2.	Add React, ReactDOM and Babel.
+3.	Add script tag with babel jsx code in it
+4.	Create a form that takes username, password, email and mobile number
+5.	Validate all of these
+6.	If there is an error display them
+7.	If not log the data submitted to the console -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Form App</title>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    //validation
+    function Validate({username, password, email, mobile}){
+        const errors = {};
+        if(!username.trim()) errors.username = "username is required";
+        else if(username.trim().length < 3 ) errors.username = "Minimum 3 Character";
+
+        if(!password) errors.password = "password is required";
+        else if(password.length < 6) errors.password ="Password should be at least 6 Character";
+
+        if(!email)errors.email = "Email Required";
+        else{
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!re.test(email)) errors.email = "Enter a valid email";
+        }
+
+        if(!mobile) errors.mobile = "mobile required";
+        else {
+            const digits = mobile.replace(/\D/g, '');
+            if (digits.length !== 10) errors.mobile = "Mobile must be 10 digits";
+        }
+        return errors;
+    }
+
+
+    function App(){
+        const [username, setUsername] = React.useState('');
+        const [password, setPassword] = React.useState('');
+        const [email, setEmail] = React.useState('');
+        const [mobile, setMobile] = React.useState('');
+        const [errors, setErrors] = React.useState({});
+
+        const handleSubmit = (e) =>{ e.preventDefault();
+        const data = {username, password, email, mobile};
+        const validationErrors = Validate(data);
+        setErrors(validationErrors);
+
+        if(Object.keys(validationErrors).length === 0)
+        {
+            console.log("form submitted:",data);
+            alert("form Submitted - check console");
+            //clear form
+            setUsername(''); setPassword(''); setEmail(''); setMobile('');
+        }
+        };
+
+        const inputStyle = { padding: 8, width: 300, marginTop: 6, marginBottom: 6 };
+
+
+        return (
+        <div style={{ padding: 20, fontFamily: 'Arial, sans-serif' }}>
+         <h1>React Form Assignment</h1>
+         <h2>Register</h2>
+         <form onSubmit={handleSubmit} noValidate>
+         <div>
+            <label>UserName :</label> <br />
+            <input value={username} onChange={e => setUsername(e.target.value)} />
+            {errors.username && <div style ={{color : 'red'}}>{errors.username}</div>}
+         </div>
+
+         <div>
+            <label>Password :</label> <br />
+            <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
+            {errors.password && <div style ={{color : 'red'}}>{errors.password}</div>}
+         </div>
+
+         <div>
+            <label>Email :</label> <br />   
+            <input value={email} onChange={e => setEmail(e.target.value)} />
+            {errors.email && <div style ={{color : 'red'}}>{errors.email}</div>}
+         </div>
+
+         <div>
+            <label>Mobile :</label> <br />
+            <input value={mobile} onChange={e => setMobile(e.target.value)} />
+            {errors.mobile && <div style ={{color : 'red'}}>{errors.mobile}</div>}
+         </div>
+
+         <button type="submit" style={{ padding: '8px 16px', marginTop: 8 }}>Submit</button>
+         </form>
+
+        </div>
+    );
+    }
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+
+  </script>
+</body>
+</html>
