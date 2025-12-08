@@ -1,0 +1,49 @@
+
+<!--Problem Statement:
+You work in XYZ Company as a Front End Developer. The company officials want you to build a web application using react
+
+Tasks to be performed:
+
+1.	Create an HTML page with basic HTML skeleton
+2.	Add React, ReactDOM and Babel.
+3.	Add script tag with babel jsx code in it
+4.	Create a useDocumentTitle Hook which allows users to set the title of the document.
+5.	Create a state variable name it title and set to document title using useDocumentTitle hook which you just created.
+6.	Use input to set the title state variable which in turn sets the title
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My React App</title>
+</head>
+<body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+    
+    function useDocumentTitle(title){
+        React.useEffect(() => {
+            document.title = title;
+        }, [title]);
+    }
+    function App(){
+        const [title, setTitle] = React.useState("My React App");
+        useDocumentTitle(title);
+        return (
+            <div>
+            <h1>Document title setter</h1>
+            <input type="text" value={title} onChange = {(e) => setTitle(e.target.value)}
+            placeholder="enter the title" />    
+            <p>Current Title: {title}</p>
+            </div>
+        );
+    }
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
